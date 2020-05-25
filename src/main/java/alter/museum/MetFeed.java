@@ -6,21 +6,22 @@ import java.util.List;
 
 public class MetFeed {
 
-    ArrayList<Departments> departments;
 
+       List<Department> departments;        //departments is not being recognized in the test?
 
-    //JSON departments + IDs  "/public/collection/v1/departments"
-    class Departments {
-        int departmentId;
-        String displayName;
-    }
+        // departments + IDs
+        class Department {
+            int departmentId;
+            String displayName;
+        }
 
-    /* list of object IDs "/public/collection/v1/objects/{objectID}" */
+ //list of object IDs
+
     class ObjectList{
         ArrayList<Integer> objectID;
     }
 
-    //specific object data   //"/public/collection/v1/objects"
+    //specific object data
     class ObjectInfo {
         int objectID;
         String primaryImage;
