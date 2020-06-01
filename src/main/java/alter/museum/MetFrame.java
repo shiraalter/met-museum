@@ -15,6 +15,7 @@ public class MetFrame extends JFrame {
     private JLabel departmentLabel;
     private JLabel departmentSelectedLabel;
 
+
     private JPanel arrowPanel;
     JButton leftButton;
     JButton rightButton;
@@ -23,10 +24,13 @@ public class MetFrame extends JFrame {
     private JPanel infoPanel;
     JLabel nameLabel;
     JLabel cultureLabel;
+    JLabel imageLabel;
+    JLabel objectIdLabel;
+    JLabel errorLabel;
 
     int counter = 0;
 
-    MetFeed.DepartmentObjects.Departments selectedDepartment;   //made into field to give buttons access to IDs
+    MetFeed.DepartmentObjects.Departments selectedDepartment;
 
     public MetFrame() {
 
@@ -36,6 +40,7 @@ public class MetFrame extends JFrame {
         setLayout(new BorderLayout());
 
 
+        //create combo box
         comboPanel = new JPanel();
         departmentLabel = new JLabel("Select a department");
         departmentBox = new JComboBox<>();
@@ -55,6 +60,7 @@ public class MetFrame extends JFrame {
             selectedDepartment = (MetFeed.DepartmentObjects.Departments) departmentBox.getSelectedItem();
             departmentSelectedLabel.setText("You selected: " + selectedDepartment);
 
+            //get department id and call method to get object ID list
             int departmentId = selectedDepartment.departmentId;
             controller.requestObjectList(departmentId);     // send department id to controller
         });
@@ -67,42 +73,71 @@ public class MetFrame extends JFrame {
         rightButton = new JButton("NEXT >>");
         rightButton.setPreferredSize(new Dimension(200, 100));
         arrowPanel.add(leftButton);
+
         arrowPanel.add(rightButton);
         add(arrowPanel, BorderLayout.SOUTH);
 
         //add action to buttons
         rightButton.addActionListener(actionEvent -> nextButton(controller));
+        leftButton.addActionListener(actionEvent -> previousButton(controller));
 
         nameLabel = new JLabel();
         cultureLabel = new JLabel();
+        imageLabel = new JLabel();
+        objectIdLabel = new JLabel();
+        errorLabel = new JLabel();
+
         infoPanel = new JPanel();
         infoPanel.add(nameLabel);
         infoPanel.add(cultureLabel);
+        infoPanel.add(imageLabel);
+        infoPanel.add(errorLabel);
+        infoPanel.add(objectIdLabel);
         add(infoPanel, BorderLayout.CENTER);
 
 
         //get retrofit from factory
         service = new MetServiceFactory().getInstance();
-        controller = new MetController(service, this, nameLabel, rightButton, cultureLabel);
-        controller.requestDepartmentList(departmentBox);                                        //scope issue?
-
-
+        controller = new MetController(service, this, nameLabel, cultureLabel, imageLabel, objectIdLabel);
+        controller.requestDepartmentList(departmentBox);
     }
 
 
     public void sendList(ArrayList<Integer> arrayListOfObjectID) {
         arrayListOfId = arrayListOfObjectID;
         controller.requestObjectInfo(arrayListOfId.get(0));
-
     }
+
+    //use counter to iterate through ID list
 
     private void nextButton(MetController controller) {
-
         counter++;
-        controller.requestObjectInfo(arrayListOfId.get(counter));
-
+        if (arrayListOfId.contains(counter)) {
+            controller.requestObjectInfo(arrayListOfId.get(counter));
+            errorLabel.setText("");
+        } else {
+            displayErrorMessage();
+        }
     }
 
+    private void previousButton(MetController controller) {
+        counter--;
+        //check if element is first in list
+        if (arrayListOfId.contains(counter)) {
+            controller.requestObjectInfo(arrayListOfId.get(counter));
+            errorLabel.setText("");
+        } else {
+            displayErrorMessage();
+        }
+    }
+
+    private void displayErrorMessage() {
+        errorLabel.setText("No Object to display. Please press the NEXT button");
+        objectIdLabel.setText("");
+        imageLabel.setText("");
+        nameLabel.setText("");
+        cultureLabel.setText("");
+    }
 
     public static void main(String[] args) {
         new MetFrame().setVisible(true);
