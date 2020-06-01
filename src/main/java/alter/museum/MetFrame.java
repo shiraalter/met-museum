@@ -2,7 +2,6 @@ package alter.museum;
 
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -29,6 +28,7 @@ public class MetFrame extends JFrame {
     JLabel errorLabel;
 
     int counter = 0;
+
 
     MetFeed.DepartmentObjects.Departments selectedDepartment;
 
@@ -69,9 +69,11 @@ public class MetFrame extends JFrame {
         //add buttons to go through objects
         arrowPanel = new JPanel();
         leftButton = new JButton("<< PREVIOUS");
+        leftButton.setEnabled(true);
         leftButton.setPreferredSize(new Dimension(200, 100));
         rightButton = new JButton("NEXT >>");
         rightButton.setPreferredSize(new Dimension(200, 100));
+        rightButton.setEnabled(true);
         arrowPanel.add(leftButton);
 
         arrowPanel.add(rightButton);
@@ -98,7 +100,7 @@ public class MetFrame extends JFrame {
 
         //get retrofit from factory
         service = new MetServiceFactory().getInstance();
-        controller = new MetController(service, this, nameLabel, cultureLabel, imageLabel, objectIdLabel);
+        controller = new MetController(service, this, nameLabel, cultureLabel, imageLabel, objectIdLabel, errorLabel);
         controller.requestDepartmentList(departmentBox);
     }
 
@@ -108,25 +110,23 @@ public class MetFrame extends JFrame {
         controller.requestObjectInfo(arrayListOfId.get(0));
     }
 
+    //try-catch for both buttons in case user tries to access an object NOT in the list
     //use counter to iterate through ID list
-
     private void nextButton(MetController controller) {
         counter++;
-        if (arrayListOfId.contains(counter)) {
+        try {
             controller.requestObjectInfo(arrayListOfId.get(counter));
-            errorLabel.setText("");
-        } else {
+        } catch (Exception e) {
             displayErrorMessage();
         }
+
     }
 
     private void previousButton(MetController controller) {
         counter--;
-        //check if element is first in list
-        if (arrayListOfId.contains(counter)) {
+        try {
             controller.requestObjectInfo(arrayListOfId.get(counter));
-            errorLabel.setText("");
-        } else {
+        } catch (Exception e) {
             displayErrorMessage();
         }
     }
@@ -137,6 +137,7 @@ public class MetFrame extends JFrame {
         imageLabel.setText("");
         nameLabel.setText("");
         cultureLabel.setText("");
+        imageLabel.setIcon(null);
     }
 
     public static void main(String[] args) {
