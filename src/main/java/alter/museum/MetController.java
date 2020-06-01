@@ -1,17 +1,14 @@
 package alter.museum;
 
-import com.google.gson.internal.$Gson$Preconditions;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,19 +22,21 @@ public class MetController {
     private JLabel cultureLabel;
     private JLabel imageLabel;
     private JLabel objectIdLabel;
+    private JLabel errorLabel;
     Color brown = new Color(103, 71, 0, 188);
     Color darkPurple = new Color(117, 0, 26, 162);
     int height = 250;
     int width = 250;
 
 
-    public MetController(MetService service, MetFrame frame, JLabel nameLabel, JLabel cultureLabel, JLabel imageLabel, JLabel objectIdLabel) {
+    public MetController(MetService service, MetFrame frame, JLabel nameLabel, JLabel cultureLabel, JLabel imageLabel, JLabel objectIdLabel, JLabel errorLabel) {
         this.service = service;
         this.frame = frame;
         this.nameLabel = nameLabel;
         this.cultureLabel = cultureLabel;
         this.imageLabel = imageLabel;
         this.objectIdLabel = objectIdLabel;
+        this.errorLabel = errorLabel;
     }
 
 
@@ -72,12 +71,11 @@ public class MetController {
             public void onResponse(Call<MetFeed.ObjectList> call, Response<MetFeed.ObjectList> response) {
                 MetFeed.ObjectList listOfIds = response.body();
 
+                //store ArrayList of objects from response into objectIDArray
                 objectIDArray = listOfIds.objectIDs;
 
-                //send arraylist to frame
+                //send ArrayList to frame
                 frame.sendList(objectIDArray);
-
-
             }
 
             @Override
@@ -95,13 +93,14 @@ public class MetController {
             public void onResponse(Call<MetFeed.ObjectInfo> call, Response<MetFeed.ObjectInfo> response) {
                 MetFeed.ObjectInfo objectInfo = response.body();
 
+                errorLabel.setText(""); //remove error label if previous department displayed it
+
                 objectIdLabel.setText("Object ID:" + objectInfo.objectID);
                 objectIdLabel.setForeground(darkPurple);
 
-                if(objectInfo.objectName.equals("")) {
+                if (objectInfo.objectName.equals("")) {
                     nameLabel.setText("No Object Name Available");
-                }
-                else{
+                } else {
                     nameLabel.setText("Object Name: " + objectInfo.objectName);
                 }
 
@@ -116,6 +115,7 @@ public class MetController {
                 try {   //prevents malformedURLException
                     if (objectInfo.primaryImage.equals("")) {
                         imageLabel.setText("No Image Available");
+                        imageLabel.setIcon(null);
                         imageLabel.setForeground(brown);
                     } else {
                         URL url = new URL(objectInfo.primaryImage);
