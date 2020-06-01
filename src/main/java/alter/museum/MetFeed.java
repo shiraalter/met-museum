@@ -1,24 +1,32 @@
 package alter.museum;
 
-import java.lang.reflect.Array;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class MetFeed {
 
+    public class MetFeed {
 
-       List<Department> departments;        //departments is not being recognized in the test?
+        class DepartmentObjects {
+            List<Departments> departments;        //departments is not being recognized in the test?
 
-        // departments + IDs
-        class Department {
-            int departmentId;
-            String displayName;
-        }
+            // departments + IDs
+            class  Departments {
+                int departmentId;
+                String displayName;
+
+                @Override
+                public String toString() {
+                    return displayName;
+                }
+            }
+       }
 
  //list of object IDs
 
     class ObjectList{
-        ArrayList<Integer> objectID;
+        ArrayList<Integer> objectIDs;
     }
 
     //specific object data
@@ -28,5 +36,6 @@ public class MetFeed {
         String objectName;
         String culture;
     }
+
 
 }

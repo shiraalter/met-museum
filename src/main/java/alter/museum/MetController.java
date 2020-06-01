@@ -11,12 +11,20 @@ import java.util.List;
 
 public class MetController {
 
+    ArrayList<Integer> objectIDArray;
     private MetService service;
     private MetFrame frame;
+    private JLabel nameLabel;
+    private JLabel cultureLabel;
+    private JButton rightButton;
 
-    public MetController(MetService service, MetFrame frame) {
+    public MetController(MetService service, MetFrame frame, JLabel nameLabel, JButton rightButton, JLabel cultureLabel) {
         this.service = service;
         this.frame = frame;
+        this.nameLabel = nameLabel;
+        this.rightButton = rightButton;
+        this.cultureLabel = cultureLabel;
+
     }
 
 
@@ -45,14 +53,17 @@ public class MetController {
 
     //LIST OF OBJECT IDs
     public void requestObjectList(int departmentID){
+
         service.getObjectID(departmentID).enqueue(new Callback<MetFeed.ObjectList>() {
             @Override
             public void onResponse(Call<MetFeed.ObjectList> call, Response<MetFeed.ObjectList> response) {
                     MetFeed.ObjectList listOfIds= response.body();      //store response into object
-                    ArrayList<Integer> objectIDArray = listOfIds.objectIDs;        //NOW can create an array list
+
+                    objectIDArray = listOfIds.objectIDs;        // it's only storing object IDs from the FIRST DEPARTMENT no matter what I click
 
                     //send arraylist to frame
-                    frame.sendList(objectIDArray);
+                    frame.sendList(objectIDArray);              //only sending IDs from FIRST department
+
 
 
             }
@@ -66,12 +77,13 @@ public class MetController {
 
 
     //METADATA
-    public void requestObjectInfo(int objectID, JLabel nameLabel){
+    public void requestObjectInfo(int objectID){
         service.getObjectInfo(objectID).enqueue(new Callback<MetFeed.ObjectInfo>() {
             @Override
             public void onResponse(Call<MetFeed.ObjectInfo> call, Response<MetFeed.ObjectInfo> response) {
                 MetFeed.ObjectInfo objectInfo = response.body();
                 nameLabel.setText(objectInfo.objectName);
+                cultureLabel.setText(objectInfo.culture);
             }
 
             @Override
