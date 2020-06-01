@@ -69,11 +69,9 @@ public class MetFrame extends JFrame {
         //add buttons to go through objects
         arrowPanel = new JPanel();
         leftButton = new JButton("<< PREVIOUS");
-        leftButton.setEnabled(true);
         leftButton.setPreferredSize(new Dimension(200, 100));
         rightButton = new JButton("NEXT >>");
         rightButton.setPreferredSize(new Dimension(200, 100));
-        rightButton.setEnabled(true);
         arrowPanel.add(leftButton);
 
         arrowPanel.add(rightButton);
