@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MetController {
-
+    JComboBox<MetFeed.DepartmentObjects.Departments> comboBox;
     ArrayList<Integer> objectIDArray;
     private MetService service;
     private MetFrame frame;
@@ -29,7 +29,7 @@ public class MetController {
     int width = 250;
 
 
-    public MetController(MetService service, MetFrame frame, JLabel nameLabel, JLabel cultureLabel, JLabel imageLabel, JLabel objectIdLabel, JLabel errorLabel) {
+    public MetController(MetService service, MetFrame frame, JLabel nameLabel, JLabel cultureLabel, JLabel imageLabel, JLabel objectIdLabel, JLabel errorLabel, JComboBox<MetFeed.DepartmentObjects.Departments> comboBox) {
         this.service = service;
         this.frame = frame;
         this.nameLabel = nameLabel;
@@ -37,22 +37,18 @@ public class MetController {
         this.imageLabel = imageLabel;
         this.objectIdLabel = objectIdLabel;
         this.errorLabel = errorLabel;
+        this.comboBox = comboBox;
     }
 
 
     //LIST OF DEPARTMENTS
-    public void requestDepartmentList(JComboBox<MetFeed.DepartmentObjects.Departments> comboBox) {
+    public void requestDepartmentList() {
         service.getDepartmentList().enqueue(new Callback<MetFeed.DepartmentObjects>() {
 
             @Override
             public void onResponse(Call<MetFeed.DepartmentObjects> call, Response<MetFeed.DepartmentObjects> response) {
                 List<MetFeed.DepartmentObjects.Departments> departmentList = response.body().departments;
-
-
-                //loop through department list and add object combobox --> Will display the toString from Feed class
-                for (int i = 0; i < departmentList.size(); i++) {
-                    comboBox.addItem(departmentList.get(i));
-                }
+                populateComboBox(departmentList, comboBox);
             }
 
             @Override
@@ -60,6 +56,13 @@ public class MetController {
                 t.printStackTrace();
             }
         });
+    }
+
+    public void populateComboBox(List<MetFeed.DepartmentObjects.Departments> departmentList, JComboBox<MetFeed.DepartmentObjects.Departments> comboBox) {
+        //loop through department list and add object combobox --> Will display the toString from Feed class
+        for (MetFeed.DepartmentObjects.Departments departments : departmentList) {
+            comboBox.addItem(departments);
+        }
     }
 
 

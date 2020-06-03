@@ -98,8 +98,8 @@ public class MetFrame extends JFrame {
 
         //get retrofit from factory
         service = new MetServiceFactory().getInstance();
-        controller = new MetController(service, this, nameLabel, cultureLabel, imageLabel, objectIdLabel, errorLabel);
-        controller.requestDepartmentList(departmentBox);
+        controller = new MetController(service, this, nameLabel, cultureLabel, imageLabel, objectIdLabel, errorLabel, departmentBox);
+        controller.requestDepartmentList();
     }
 
 
