@@ -7,10 +7,8 @@ import retrofit2.Response;
 
 import javax.swing.*;
 
-import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class MetControllerTest {
@@ -44,21 +42,28 @@ public class MetControllerTest {
         JLabel label = mock(JLabel.class);
         JComboBox<MetFeed.DepartmentObjects.Departments> comboBox = mock(JComboBox.class);
         MetFrame frame = mock(MetFrame.class);
-
-        MetController controller = new MetController(service, frame, label, label, label, label, label, comboBox);
-        List<MetFeed.DepartmentObjects.Departments> departmentList = mock(List.class);
-
         Response<MetFeed> response = mock(Response.class);  //needed?
 
-        //what object is calling the populateCombobox aside from response?
-        doReturn(departmentList).when(response).body();
+        MetController controller = new MetController(service, frame, label, label, label, label, label, comboBox);
+
+        //create list
+        MetFeed.DepartmentObjects list = new MetFeed.DepartmentObjects();
+        MetFeed.DepartmentObjects.Departments depts = new MetFeed.DepartmentObjects.Departments();
+        depts.displayName = "museum";
+        List<MetFeed.DepartmentObjects.Departments> departmentList = new ArrayList<>();
+        departmentList.add(depts);
+        list.departments = departmentList;
+
+
+        //test still passes without the doReturns + response
+        doReturn(list).when(response).body();
         doReturn(comboBox).when(response).body();
 
         //when
         controller.populateComboBox(departmentList, comboBox);
 
         //then
-       // verify(comboBox   );
+        verify(comboBox).addItem(list.departments.get(0));
 
 
     }
