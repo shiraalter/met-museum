@@ -8,11 +8,11 @@ import java.util.List;
 
     public class MetFeed {
 
-        class DepartmentObjects {
+        static class DepartmentObjects {
             List<Departments> departments;        //departments is not being recognized in the test?
 
             // departments + IDs
-            class  Departments {
+          static  class  Departments {
                 int departmentId;
                 String displayName;
 
