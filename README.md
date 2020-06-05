@@ -19,3 +19,5 @@ Download Executable [jar File](https://github.com/shiraalter/met-museum/blob/mas
 This displays data from the [Met Museum](https://collectionapi.metmuseum.org/) 
 
 ![Alt](screenshots/MetFrame.PNG "Main Application Frame")
+![Alt](screenshots/instrument.PNG "Main Application Frame")
+![Alt](screenshots/noObject.PNG "Main Application Frame")
