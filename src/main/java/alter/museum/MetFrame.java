@@ -16,16 +16,16 @@ public class MetFrame extends JFrame {
 
 
     private JPanel arrowPanel;
-    JButton leftButton;
-    JButton rightButton;
+    private JButton leftButton;
+    private JButton rightButton;
     ArrayList<Integer> arrayListOfId;
 
     private JPanel infoPanel;
-    JLabel nameLabel;
-    JLabel cultureLabel;
-    JLabel imageLabel;
-    JLabel objectIdLabel;
-    JLabel errorLabel;
+    private JLabel nameLabel;
+    private JLabel cultureLabel;
+   private  JLabel imageLabel;
+    private JLabel objectIdLabel;
+    private JLabel errorLabel;
 
     int counter = 0;
 
