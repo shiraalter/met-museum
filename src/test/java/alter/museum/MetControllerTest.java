@@ -172,6 +172,6 @@ public class MetControllerTest {
         verify(label).setText("Object Name: " + object.objectName);
         verify(label).setText("Culture: " + object.culture);
         verify(label).setText("No Image Available");
-        
+
     }
 }
