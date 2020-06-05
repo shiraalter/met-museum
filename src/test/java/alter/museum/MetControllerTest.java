@@ -116,14 +116,14 @@ public class MetControllerTest {
 
         doReturn(frame).when(response).body();
 
+
         //when
         controller.createAndSendObjectList(list);
 
         //then
         verify(mockIDList).equals(list.objectIDs);      //verify that the method populates objectIDArray with the listOfIds.objectIDs
-        verify(frame.arrayListOfId).equals(list); //verify that the ArrayList is sent to the frame and assigned to arrayListOfId in sendList method in controller
-
-        //verify(frame...) getting erorr "argument passed to verify() should be a mock but is null //
+        verify(frame).sendList(idList); //verify that the ArrayList is sent to the frame and assigned to arrayListOfId in sendList method in controller
+        
 
     }
 
