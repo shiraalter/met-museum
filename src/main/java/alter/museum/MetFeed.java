@@ -25,7 +25,7 @@ import java.util.List;
 
  //list of object IDs
 
-    class ObjectList{
+    static class ObjectList{
         ArrayList<Integer> objectIDs;
     }
 
