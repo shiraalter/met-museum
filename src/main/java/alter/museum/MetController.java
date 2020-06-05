@@ -99,40 +99,7 @@ public class MetController {
             public void onResponse(Call<MetFeed.ObjectInfo> call, Response<MetFeed.ObjectInfo> response) {
                 MetFeed.ObjectInfo objectInfo = response.body();
 
-                errorLabel.setText(""); //remove error label if previous department displayed it
-
-                objectIdLabel.setText("Object ID:" + objectInfo.objectID);
-                objectIdLabel.setForeground(darkPurple);
-
-                if (objectInfo.objectName.equals("")) {
-                    nameLabel.setText("No Object Name Available");
-                } else {
-                    nameLabel.setText("Object Name: " + objectInfo.objectName);
-                }
-
-                if (objectInfo.culture.equals("")) {
-                    cultureLabel.setText("No Culture Available");
-                    cultureLabel.setForeground(Color.BLUE);
-                } else {
-                    cultureLabel.setText("Culture: " + objectInfo.culture);
-                    cultureLabel.setForeground(Color.BLUE);
-                }
-
-                try {   //prevents malformedURLException
-                    if (objectInfo.primaryImage.equals("")) {
-                        imageLabel.setText("No Image Available");
-                        imageLabel.setIcon(null);
-                        imageLabel.setForeground(brown);
-                    } else {
-                        URL url = new URL(objectInfo.primaryImage);
-                        Image image = ImageIO.read(url);
-                        Image newImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-                        imageLabel.setIcon(new ImageIcon(newImage));
-                        imageLabel.setText("");     //removes "No image available"
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                setLabels(objectInfo);
             }
 
             @Override
@@ -142,5 +109,45 @@ public class MetController {
         });
     }
 
+    public void setLabels(MetFeed.ObjectInfo objectInfo) {
+        errorLabel.setText(""); //remove error label if previous department displayed it
+
+        objectIdLabel.setText("Object ID:" + objectInfo.objectID);
+        objectIdLabel.setForeground(darkPurple);
+
+        if (objectInfo.objectName.equals("")) {
+            nameLabel.setText("No Object Name Available");
+        } else {
+            nameLabel.setText("Object Name: " + objectInfo.objectName);
+        }
+
+        if (objectInfo.culture.equals("")) {
+            cultureLabel.setText("No Culture Available");
+            cultureLabel.setForeground(Color.BLUE);
+        } else {
+            cultureLabel.setText("Culture: " + objectInfo.culture);
+            cultureLabel.setForeground(Color.BLUE);
+        }
+
+        try {   //prevents malformedURLException
+            if (objectInfo.primaryImage.equals("")) {
+                imageLabel.setText("No Image Available");
+                imageLabel.setIcon(null);
+                imageLabel.setForeground(brown);
+            } else {
+                URL url = new URL(objectInfo.primaryImage);
+                Image image = ImageIO.read(url);
+                Image newImage = image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                imageLabel.setIcon(new ImageIcon(newImage));
+                imageLabel.setText("");     //removes "No image available"
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
+
+
+
