@@ -30,7 +30,7 @@ import java.util.List;
     }
 
     //specific object data
-    class ObjectInfo {
+    static class ObjectInfo {
         int objectID;
         String primaryImage;
         String objectName;
