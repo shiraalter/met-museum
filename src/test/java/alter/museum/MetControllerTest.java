@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.mockito.Mockito.*;
 
 public class MetControllerTest {
@@ -27,7 +28,6 @@ public class MetControllerTest {
         doReturn(call).when(service).getDepartmentList();
 
         MetController controller = new MetController(service, frame, label, label, label, label, label, comboBox);
-
 
 
         //when
@@ -97,14 +97,13 @@ public class MetControllerTest {
     }
 
     @Test
-    public void createAndSendObjectList(){
+    public void createAndSendObjectList() {
         //given
         Response<MetFeed> response = mock(Response.class);
         MetService service = mock(MetService.class);
         JLabel label = mock(JLabel.class);
         JComboBox<MetFeed.DepartmentObjects.Departments> comboBox = mock(JComboBox.class);
         MetFrame frame = mock(MetFrame.class);
-        ArrayList<Integer> mockIDList = mock(ArrayList.class);    //mock ArrayList to pass to method to populate
         MetController controller = new MetController(service, frame, label, label, label, label, label, comboBox);
 
         //create MetFeed object and add object ArrayList values
@@ -121,12 +120,9 @@ public class MetControllerTest {
         controller.createAndSendObjectList(list);
 
         //then
-        verify(mockIDList).equals(list.objectIDs);      //verify that the method populates objectIDArray with the listOfIds.objectIDs
         verify(frame).sendList(idList); //verify that the ArrayList is sent to the frame and assigned to arrayListOfId in sendList method in controller
-        
 
     }
-
 
     @Test
     public void requestObjectInfo() {
@@ -149,6 +145,33 @@ public class MetControllerTest {
 
     }
 
+    @Test
+    public void setLabels() {
+        //given
+        Response<MetFeed> response = mock(Response.class);
+        MetService service = mock(MetService.class);
+        JLabel label = mock(JLabel.class);
+        JComboBox<MetFeed.DepartmentObjects.Departments> comboBox = mock(JComboBox.class);
+        MetFrame frame = mock(MetFrame.class);
+        MetController controller = new MetController(service, frame, label, label, label, label, label, comboBox);
 
+        MetFeed.ObjectInfo object = new MetFeed.ObjectInfo();
+        object.objectID = 2;
+        object.primaryImage = "";
+        object.objectName = "bob";
+        object.culture = "bob";
 
+        doReturn(object).when(response).body();
+
+        //when
+        controller.setLabels(object);
+
+        //then
+        verify(label).setText("");
+        verify(label).setText("Object ID:" + object.objectID);
+        verify(label).setText("Object Name: " + object.objectName);
+        verify(label).setText("Culture: " + object.culture);
+        verify(label).setText("No Image Available");
+        
+    }
 }
