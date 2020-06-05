@@ -73,12 +73,8 @@ public class MetController {
             @Override
             public void onResponse(Call<MetFeed.ObjectList> call, Response<MetFeed.ObjectList> response) {
                 MetFeed.ObjectList listOfIds = response.body();
+                createAndSendObjectList(listOfIds);
 
-                //store ArrayList of objects from response into objectIDArray
-                objectIDArray = listOfIds.objectIDs;
-
-                //send ArrayList to frame
-                frame.sendList(objectIDArray);
             }
 
             @Override
@@ -86,6 +82,13 @@ public class MetController {
                 t.printStackTrace();
             }
         });
+    }
+
+    public void createAndSendObjectList(MetFeed.ObjectList listOfIds) {
+        //store ArrayList of objects from response into objectIDArray
+        objectIDArray = listOfIds.objectIDs;
+        //send ArrayList to frame
+        frame.sendList(objectIDArray);
     }
 
 
