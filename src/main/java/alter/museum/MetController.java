@@ -74,7 +74,6 @@ public class MetController {
             public void onResponse(Call<MetFeed.ObjectList> call, Response<MetFeed.ObjectList> response) {
                 MetFeed.ObjectList listOfIds = response.body();
                 createAndSendObjectList(listOfIds);
-
             }
 
             @Override
