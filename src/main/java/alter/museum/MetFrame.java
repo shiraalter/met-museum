@@ -55,15 +55,7 @@ public class MetFrame extends JFrame {
 
 
         //when department is selected
-        departmentBox.addActionListener(actionEvent -> {
-            //store department id
-            selectedDepartment = (MetFeed.DepartmentObjects.Departments) departmentBox.getSelectedItem();
-            departmentSelectedLabel.setText("You selected: " + selectedDepartment);
-
-            //get department id and call method to get object ID list
-            int departmentId = selectedDepartment.departmentId;
-            controller.requestObjectList(departmentId);     // send department id to controller
-        });
+        departmentBox.addActionListener(actionEvent -> {getSelectedDepartment();});
 
 
         //add buttons to go through objects
@@ -100,6 +92,16 @@ public class MetFrame extends JFrame {
         service = new MetServiceFactory().getInstance();
         controller = new MetController(service, this, nameLabel, cultureLabel, imageLabel, objectIdLabel, errorLabel, departmentBox);
         controller.requestDepartmentList();
+    }
+
+    private void getSelectedDepartment() {
+        //store department id
+        selectedDepartment = (MetFeed.DepartmentObjects.Departments) departmentBox.getSelectedItem();
+        departmentSelectedLabel.setText("You selected: " + selectedDepartment);
+
+        //get department id and call method to get object ID list
+        int departmentId = selectedDepartment.departmentId;
+        controller.requestObjectList(departmentId);     // send department id to controller
     }
 
 
